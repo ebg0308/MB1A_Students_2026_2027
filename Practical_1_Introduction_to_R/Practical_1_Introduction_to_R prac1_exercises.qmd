@@ -1,0 +1,42 @@
+---
+title: "Practical_1_Introduction_to_R/prac1_exercises.qmd"
+---
+```{r}
+round(3.14159)
+```
+```{r}
+round(3.14159, digits = 2)
+```
+```{r}
+print(seq(4,16,4))
+```
+```{r}
+print(rep(5,7))
+```
+```{r}
+print(rep(x=5, times = 7))
+```
+```{r}
+my_variable <- 12
+my_variable <- 10
+print(my_variable)
+```
+```{r}
+char = "hi"
+print(class(char))
+
+```
+```{r}
+cell_ID1 <- "CX1"
+cell_ID2 <- "CX2"
+
+treated_1 <- TRUE
+treated_2 <- FALSE
+
+num_cells_before_1 <- 5415
+num_cells_before_2 <- 8123
+
+num_cells_after_1 <- 1432
+num_cells_after_2 <- 7543
+```
+
