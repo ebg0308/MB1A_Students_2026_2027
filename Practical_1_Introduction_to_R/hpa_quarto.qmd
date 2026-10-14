@@ -1,0 +1,26 @@
+---
+title: "Exercise - Analysis in Quarto"
+author: "Eleanor Gillett"
+---
+I am calculating the total number of genes with regionally elevated expression in the forebrain (the cerebral cortex, basal ganglia, thalamus and hypothalamus) in a human, pig and mouse.
+
+Human:
+```{r}
+human_genes <- sum(180,83,57,110)
+print (human_genes)
+```
+
+
+```{r}
+pig_genes <- sum(109, 157, 31, 45)
+print(pig_genes)
+
+```
+
+
+```{r}
+mouse_genes <- sum(55,185,60,98)
+print(mouse_genes)
+
+```
+The species with the highest number of genes with regionally elevated expression is human. 
