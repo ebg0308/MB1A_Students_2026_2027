@@ -1,0 +1,151 @@
+---
+title: "Practical_2_Data_Frames_and_Plots/worked_example.qmd"
+author: "Eleanor Gillett"
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this 
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+```{r}
+library(gt)
+library(tidyverse)
+library(maps)
+```
+```{r}
+breeding_site_locations <- read_csv("data/breeding_site_locations.csv")
+
+gt(breeding_site_locations)
+```
+
+```{r}
+migratory_data <- read_csv("data/migratory_connectivity_dataset.csv")
+```
+
+
+```{r}
+gt(migratory_data)
+```
+```{r}
+head(migratory_data)
+```
+#read the file into a new variable
+#used gt to view the data frame
+#head visualises the top 10 rows of data
+
+```{r}
+glimpse (migratory_data)
+```
+
+
+```{r}
+colnames(migratory_data)
+```
+
+
+```{r}
+my_numbers <- c(2,4,6,8)
+sum(my_numbers)
+```
+#creates a vector of numbers
+#we then sum up the elements in this vector
+```{r}
+my_numbers |> sum()
+```
+#the pipe function |> passes the values stored in the vector my_numbes into the sum function, which adds them up
+```{r}
+my_numbers |> sum() |> sqrt() |> round()
+
+
+```
+#shows further operations performed in the pipe
+```{r}
+my_result <- my_numbers |> sum() |> sqrt() |> round()
+print(my_result)
+```
+#assigns the pipe result to a variable and prints it out
+```{r}
+migratory_data <- read_csv("data/migratory_connectivity_dataset.csv")
+```
+
+
+
+```{r}
+bird_breeding_selected <- breeding_site_locations |>
+  select(Site, Longitude, Latitude)
+
+gt(bird_breeding_selected)
+```
+#selects just the site, longitude and latitude columns from the breeding sites data table
+```{r}
+bird_breeding_selected <- breeding_site_locations |>
+  select(Site, Longitude, Latitude)
+
+gt(bird_breeding_selected)
+```
+# removes duplicate rows e.g. Vomb (which appeared x2 in the original data)
+```{r}
+bird_breeding_selected <- breeding_site_locations |>
+  select(Site, Longitude, Latitude) |>
+  distinct() |>
+  rename(Breeding_Longitude = Longitude, Breeding_Latitude = Latitude)
+
+gt(bird_breeding_selected)
+```
+#renames the column titles
+```{r}
+bird_migration_selected <- migratory_data |>
+  select(Site, winterLongitude, winterLatitude, pslon, pslat, iblon, iblat, awestlon, awestlat) |>
+  distinct() |>
+  dplyr::rename(Winter_Longitude = winterLongitude,
+ Winter_Latitude = winterLatitude,
+Stopover_Longitude = pslon,
+Stopover_Latitude = pslat,
+Iberian_Longitude = iblon,
+Iberian_Latitude = iblat,
+Westmost_Longitude = awestlon,
+Westmost_Latitude = awestlat)
+
+gt(bird_migration_selected)
+```
+#function that selects columns, takes distinct rows (not repeats) and changes the column heading names
+```{r}
+bird_breeding_dartmoor <- bird_breeding_selected |> filter(Site == "Dartmoor")
+
+gt(bird_breeding_dartmoor)
+
+```
+#gets rows only for dartmoor
+```{r}
+bird_breeding_not_dartmoor <- bird_breeding_selected |> filter(Site != "Dartmoor")
+
+gt(bird_breeding_not_dartmoor)
+
+
+```
+#gets rows everywhere except dartmoor
+
+```{r}
+bird_breeding_long_10 <- bird_breeding_selected |> filter(Breeding_Longitude > 10)
+
+gt(bird_breeding_long_10)
+
+```
+#gets rows where breeding longitude is greater than 10

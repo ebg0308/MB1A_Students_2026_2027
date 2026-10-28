@@ -1,0 +1,84 @@
+---
+title: "Practical_2_Data_Frames_and_Plots/visualisation_exercise.qmd"
+author: "Eleanor Gillett"
+---
+
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this 
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+```{r}
+library(gt)
+library(tidyverse)
+library(maps)
+```
+```{r}
+breeding_site_locations <- read_csv("data/breeding_site_locations.csv")
+```
+
+
+```{r}
+gt(breeding_site_locations)
+```
+#enables us to view the data frame
+
+```{r}
+colnames(breeding_site_locations)
+```
+#shows column names from the data frame
+
+```{r}
+glimpse(breeding_site_locations)
+```
+#shows summary of the data frame
+#includes number of rows and columns in the data frame
+
+```{r}
+print(nrow(breeding_site_locations))
+print(ncol(breeding_site_locations))
+print(dim(breeding_site_locations))
+```
+#used to print out number of rows, columns and both rows + columns, respectively 
+
+```{r}
+migratory_data <- read_csv("data/migratory_connectivity_dataset.csv")
+```
+
+
+
+```{r}
+bird_breeding_selected <- breeding_site_locations |>
+  select(Site, Longitude, Latitude)
+
+gt(bird_breeding_selected)
+```
+#selects just the site, longitude and latitude columns from the breeding sites data table
+```{r}
+bird_breeding_selected <- breeding_site_locations |>
+  select(Site, Longitude, Latitude)
+
+gt(bird_breeding_selected)
+```
+# removes duplicate rows e.g. Vomb (which appeared x2 in the original data)
+```{r}
+
+```
+
+
