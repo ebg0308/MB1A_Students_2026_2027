@@ -149,3 +149,95 @@ gt(bird_breeding_long_10)
 
 ```
 #gets rows where breeding longitude is greater than 10
+
+```{r}
+bird_breeding_long_10 <- bird_breeding_selected |> filter(Breeding_Longitude > 10)
+
+gt(bird_breeding_long_10)
+```
+```{r}
+bird_breeding_exc <- bird_breeding_selected |>
+  filter(Site != "Spain")
+gt(bird_breeding_exc)
+```
+```{r}
+bird_migration_exc <- bird_migration_selected |>
+  filter(Site != "Spain")
+
+gt(head(bird_migration_exc))
+```
+
+
+```{r}
+bird_migration_grouped <- bird_migration_exc |> group_by(Site)
+
+glimpse(bird_migration_grouped)
+```
+```{r}
+lat_df <- bird_migration_grouped |>
+  summarise(Highest_Lat_Stopover = max(Stopover_Latitude, na.rm = TRUE))
+
+gt(lat_df)
+```
+#The na.rm = TRUE function tells R to ignore any rows with a value of "NA", leaving just rows with data in
+```{r}
+lat_df <- bird_migration_grouped |>
+  summarise(
+    Highest_Lat_Stopover = max(Stopover_Latitude, na.rm = TRUE),
+    Lowest_Lat_Stopover = min(Stopover_Latitude, na.rm = TRUE),
+    Mean_Lat_Stopover = mean(Stopover_Latitude, na.rm = TRUE),
+    Highest_Lat_Winter = max(Winter_Latitude, na.rm = TRUE),
+    Lowest_Lat_Winter = min(Winter_Latitude, na.rm = TRUE),
+    Mean_Lat_Winter = mean(Winter_Latitude, na.rm = TRUE)
+  )
+
+gt(lat_df)
+```
+#Gives us all our data rows without any NA blanks
+```{r}
+bird_migration_grouped <- bird_migration_exc |> group_by(Site)
+
+bird_migration_summary <- bird_migration_grouped |>
+  summarise(
+    Stopover_Longitude = median(Stopover_Longitude, na.rm = TRUE),
+    Stopover_Latitude = median(Stopover_Latitude, na.rm = TRUE),
+    Iberian_Longitude = median(Iberian_Longitude, na.rm = TRUE),
+    Iberian_Latitude = median(Iberian_Latitude, na.rm = TRUE),
+    Westmost_Longitude = median(Westmost_Longitude, na.rm = TRUE),
+    Westmost_Latitude = median(Westmost_Latitude, na.rm = TRUE),
+    Winter_Longitude = median(Winter_Longitude, na.rm = TRUE),
+    Winter_Latitude = median(Winter_Latitude, na.rm = TRUE)
+  )
+gt(bird_migration_summary)
+```
+#Groups data by site, then makes a summary data frame which contains the median values for all latitude + longitude columns
+```{r}
+combined_bird_data <- full_join(bird_breeding_exc, bird_migration_summary)
+
+gt(combined_bird_data)
+```
+#Joins all data in bird_breeding and bird_migration into one table (adding NA where no data is present)
+```{r}
+combined_bird_piv <- combined_bird_data |>
+  pivot_longer(
+    cols = ends_with(c("_Longitude", "_Latitude")),
+    names_sep = "_",
+    names_to = c("Location_Type", ".value")
+  )
+
+gt(combined_bird_piv)
+```
+```{r}
+spring_vals <- c("Breeding", "Stopover", "Winter")
+autumn_vals <- c("Breeding", "Iberian", "Westmost", "Winter")
+
+spring_data <- combined_bird_piv |> filter(Location_Type %in% spring_vals)
+
+autumn_data <- combined_bird_piv |> filter(Location_Type %in% autumn_vals)
+```
+#generates 2 subsets of the dataframe (one with all spring and one with all autumn data)
+```{r}
+write_csv(spring_data, "output/birds_spring.csv")
+write_csv(autumn_data, "output/birds_autumn.csv")
+```
+#writes spring and autumn data into file we want to save them into
