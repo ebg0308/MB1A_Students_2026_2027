@@ -241,3 +241,47 @@ write_csv(spring_data, "output/birds_spring.csv")
 write_csv(autumn_data, "output/birds_autumn.csv")
 ```
 #writes spring and autumn data into file we want to save them into
+```{r}
+ggplot(spring_data, aes( x = Longitude, y= Latitude))
+```
+#Creates a graph using our spring data to add axes for latitude and longitude
+```{r}
+ggplot(spring_data, aes( x = Longitude, y= Latitude)) + geom_point() + annotation_borders(linewidth = 0.2) +
+  coord_quickmap()
+```
+#plots longitude and latitude points as a scatter plot. Also adds a map
+```{r}
+min_long <- spring_data |>
+  pull(Longitude) |>
+  min()
+
+print(min_long)
+```
+#finds minimum longitude from the data in our dataframe
+```{r}
+min_lon <- spring_data |> pull(Longitude) |> min()
+max_lon <- spring_data |> pull(Longitude) |> max()
+min_lat <- spring_data |> pull(Latitude) |> min()
+max_lat <- spring_data |> pull(Latitude) |> max()
+
+print(min_lon)
+print(max_lon)
+print(min_lat)
+print(max_lat)
+```
+```{r}
+ggplot(spring_data, aes( x = Longitude, y= Latitude, color = Site, shape = Location_Type)) + geom_point(size=3) + annotation_borders(linewidth = 0.2) +
+  coord_quickmap(
+    xlim = c(min_lon - 2, max_lon + 2), 
+    ylim = c(min_lat - 2, max_lat + 2)) +
+  geom_path(aes(group = Site)) +
+  ggtitle("Pied Flycatcher Spring Migration Routes") +
+  xlab("Longitude (°)") +
+  ylab("Latitude (°)") +
+  theme_minimal()
+```
+#restricts longitude and latitude lines to the max / min from our dataset
+#Changed size of poins to 3 to make larger
+#added color and shape to each data point
+#added flight paths
+#added a title and axis-labels
